@@ -484,7 +484,7 @@ def work_out_net(data_gross,
 
 # factors .First element of tuple is SR difference, second is adjustment
 adj_factors = ([
-    -.5, -.4, -.3, -25, -.2, -.15, -.1, -0.05, 0.0, .05, .1, .15, .2, .25, .3,
+    -.5, -.4, -.3, -.25, -.2, -.15, -.1, -0.05, 0.0, .05, .1, .15, .2, .25, .3,
     .4, .5
 ], [
     .32, .42, .55, .6, .66, .77, .85, .94, 1.0, 1.11, 1.19, 1.3, 1.37, 1.48,
@@ -949,13 +949,14 @@ def vol_equaliser(mean_list, stdev_list):
 
     norm_factor = [asset_stdev / avg_stdev for asset_stdev in stdev_list]
 
-    norm_means = [
-        mean_list[i] / norm_factor[i] for (i, notUsed) in enumerate(mean_list)
-    ]
-    norm_stdev = [
-        stdev_list[i] / norm_factor[i]
-        for (i, notUsed) in enumerate(stdev_list)
-    ]
+    with np.errstate(invalid='ignore'):
+        norm_means = [
+            mean_list[i] / norm_factor[i] for (i, notUsed) in enumerate(mean_list)
+        ]
+        norm_stdev = [
+            stdev_list[i] / norm_factor[i]
+            for (i, notUsed) in enumerate(stdev_list)
+        ]
 
     return (norm_means, norm_stdev)
 
